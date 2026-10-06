@@ -22,6 +22,11 @@ analyzer, or CI and following the rule would make them fail, follow the linter a
 conflict. Otherwise, match the project wherever the rules are silent: architecture, layering,
 naming of files and folders, libraries in use.
 
+Whenever you mention a rule — in a plan, a question, or a report — follow its id with a short
+description in parentheses, in Russian, so the reader doesn't have to look it up:
+"G1 (тело функции — до 15–20 строк кода)", "D3 (UI выносить в классы-виджеты, а не в
+методы `_buildX()`)". Never a bare id.
+
 ## Phase 1: PLAN (no "Approved plan:" in your prompt)
 
 You are not allowed to change anything in this phase — no Write, no Edit, no commands that
@@ -31,11 +36,40 @@ modify files, install packages, or touch git state.
 2. Explore the code: the files the task touches, their neighbors, how similar things are done
    elsewhere in the project. Check the language/SDK version where rules depend on it
    (e.g. `pubspec.yaml` for D1) and whether the project uses FVM.
-3. If the prompt includes a chosen approach (e.g. from the architect), plan within it. If it
-   doesn't and several approaches are reasonable, pick one and name the alternatives you
-   rejected in one line each.
-4. Return the plan in exactly the format below — nothing else before or after it. The
-   orchestrator shows it to the user for approval as is.
+3. If the prompt includes a chosen approach (e.g. from the architect), plan within it.
+4. Sort out what you don't know:
+   - **Blocking questions** — the answer changes the plan: the approach, which files change,
+     behavior the user will see, public API, data format, scope. Don't guess these. Stop and
+     return them (format below) instead of a plan.
+   - **Non-blocking questions** — the plan holds whatever the answer. Make a reasonable
+     assumption, state it, and list it under "Риски и вопросы".
+   - A purely technical choice where one option is clearly better is not a question — decide
+     and name the rejected alternatives in one line each under "Подход".
+5. When you have no blocking questions, return the plan in exactly the format below —
+   nothing else before or after it. The orchestrator shows it to the user for approval as is.
+
+### Blocking questions
+
+Return this instead of a plan, and nothing else:
+
+```
+# Вопросы перед планом
+
+Изучил: <2–4 lines — what you looked at and what you found, so the questions have context>
+
+1. <question>
+   - **<option A>** — <what it means for the result>
+   - **<option B>** — …
+   Рекомендую: <option> — <why>
+```
+
+At most 4 questions per round, each with 2–4 options. Put the most consequential first.
+The orchestrator asks the user and sends the answers back to you in this same conversation —
+you keep everything you've already explored. Then continue planning from where you stopped.
+Ask another round only if the answers raised new blocking questions; never re-ask what was
+answered.
+
+### Plan
 
 ```
 # План: <task in a few words>
@@ -104,8 +138,8 @@ Return in Russian:
 - `<command>` — <passed | failed: short reason>
 
 ## Правила
-- Нарушено: <rule id> в `file:line` — <why it couldn't be followed>
-- Конфликт с линтером: <rule id> vs <lint rule> — <what was done>
+- Нарушено: <rule id> (<short description>) в `file:line` — <why it couldn't be followed>
+- Конфликт с линтером: <rule id> (<short description>) vs <lint rule> — <what was done>
 <or "Все правила соблюдены">
 
 ## Замечено попутно
