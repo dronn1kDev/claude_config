@@ -22,7 +22,7 @@ Pull out of the user's message:
 - **Depth** — "быстро", "на скорую руку" → quick; "глубоко", "основательно", "подробно" →
   deep; otherwise **standard**.
 - **Save** — "сохрани", "в обсидиан", "в research" → save; "не сохраняй" → don't; otherwise
-  ask after delivering the answer (step 6).
+  offer it in one plain-text line after the answer (step 6).
 
 **Check earlier research first.** List `/Users/dronn1k/claude_config/research/` and grep it
 for the topic. If a related note exists, read it, tell the user in one line, and use it:
@@ -124,10 +124,12 @@ the user's language, in this shape:
   «Могу копнуть путь „миграция" глубже».
 - If an analyst failed or ran out of budget, say which path is incomplete and why.
 
-## 6. Save (ask unless told)
+## 6. Save (offer unless told)
 
-If the user didn't say whether to save, ask after the answer with AskUserQuestion:
-"Сохранить в Obsidian?" — options "Сохранить" / "Не сохранять".
+If the user didn't say whether to save, end the answer with one plain-text line offering it,
+e.g. «Сохранить в Obsidian? Скажи „сохрани", если нужно.» Don't use AskUserQuestion here —
+the user replies in chat only if they want it saved. Keep the analysts' full reports in
+context until then, so a later "сохрани" can still write them.
 
 To save, write `/Users/dronn1k/claude_config/research/<YYYY-MM-DD> <short title>.md`:
 
