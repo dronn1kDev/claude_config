@@ -25,3 +25,7 @@
   7. If the engineer stops on a material deviation, its amendment goes through approval the same way. The next engineer gets the task, the plan, the approved amendment, the handoff, and the previous engineer's report on what is already done.
 - A plan the user wrote themselves and told you to execute counts as approved.
 - Relay the engineer's report including rule violations and failed checks. The engineer never commits; commits happen only when the user asks.
+
+## Documentation and notes
+
+- When asked to document something, write a note or a guide, or tidy up an existing note, use the `obsidian-docs` skill — Markdown files in the Obsidian vault or the project's docs folder. Don't create Claude Docs or Word documents for this unless the user names that format.
