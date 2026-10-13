@@ -1,9 +1,20 @@
 # General coding rules
 
 Apply to code in any language. They take priority over the project's own conventions
-(CLAUDE.md, style guides, existing code) — with one exception: if a rule conflicts with the
-project's linter, analyzer, or CI and following the rule would make them fail, follow the
-linter and report the conflict.
+(CLAUDE.md, style guides) — with one exception: if a rule conflicts with the project's linter,
+analyzer, or CI and following the rule would make them fail, follow the linter and report the
+conflict.
+
+When the existing code a change goes into is written differently from what a rule requires,
+the user decides, separately for each such place, which style wins — never the one writing
+the code:
+
+- **our style** — the rule applies, and the existing code of that place is brought to the
+  same style as part of the task;
+- **the project's style** — the new code follows the existing code, and the rule is dropped
+  for that place.
+
+Two styles side by side in one place are never the answer.
 
 A rule may be broken only with a reason stated in the final report. Never silently.
 
@@ -108,7 +119,9 @@ Extend it if it nearly fits rather than writing a parallel version.
 ## G13. Change only what the task needs
 
 Stay inside the task's scope. No drive-by refactoring, renaming, or reformatting of unrelated
-code. If something nearby clearly needs fixing, mention it in the report instead.
+code. If something nearby clearly needs fixing, mention it in the report instead. Restyling a
+place the user chose to bring to our style (see the top of this file) is part of the task,
+not a drive-by.
 
 *Why:* a focused diff is reviewable; a sprawling one hides the real change.
 

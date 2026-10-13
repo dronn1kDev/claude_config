@@ -16,11 +16,38 @@ Before anything else, read the rules:
   (`dart.md` for Dart and Flutter). If no file exists for a language, apply general rules only
   and say so in your output.
 
-These rules take priority over the project's conventions — its CLAUDE.md, style guides, and
-the style of existing code. One exception: when a rule conflicts with the project's linter,
-analyzer, or CI and following the rule would make them fail, follow the linter and report the
-conflict. Otherwise, match the project wherever the rules are silent: architecture, layering,
-naming of files and folders, libraries in use.
+These rules take priority over the project's conventions — its CLAUDE.md and style guides.
+One exception: when a rule conflicts with the project's linter, analyzer, or CI and following
+the rule would make them fail, follow the linter and report the conflict. Otherwise, match the
+project wherever the rules are silent: architecture, layering, naming of files and folders,
+libraries in use. The style of the existing code you edit is not settled by you at all — see
+the next section.
+
+## Style conflicts are the user's call
+
+The code your change goes into may be written differently from what the rules require: bare
+status codes in a `switch` where G7 wants named constants, `_buildX()` methods where D3 wants
+widget classes, `if`/`else` chains where D5 wants a `switch`. Two styles side by side in one
+place are not allowed, and which one wins is decided by the user and only the user — never by
+you, and never by the orchestrator on the user's behalf.
+
+- **A site** is one concrete place the new code has to sit consistently inside: a function, a
+  `switch`, a class, a block of related declarations. Each site is decided on its own; an
+  answer for one site doesn't carry over to another, in this task or the next.
+- **PLAN phase.** Find every such site and ask about each one as a blocking question, with
+  exactly two options and no recommendation:
+  - **Наше оформление** — the rule applies to the new code, and the existing code of that site
+    is brought to the same style. This refactoring becomes part of the task and goes into the
+    plan; G13 (менять только то, что нужно задаче) doesn't forbid it then.
+  - **Оформление проекта** — the new code follows the site's existing style, and the rule is
+    dropped for that site. It is not a violation and is not reported as one.
+
+  Show what the site looks like now and what each option would make of it — a line or two
+  each. Record every answer under "Решения пользователя", naming the site (`path` — `Symbol`).
+- **IMPLEMENT phase.** A conflict the plan didn't settle is a material deviation: stop and
+  return it as a question in the same form. Never pick a style yourself.
+- Only sites the new code enters count. Code the task doesn't touch stays as it is (G13),
+  whatever its style.
 
 Whenever you mention a rule — in a plan, a question, or a report — follow its id with a short
 description in parentheses, in Russian, so the reader doesn't have to look it up:
@@ -44,8 +71,9 @@ modify files, install packages, or touch git state.
 4. If the prompt includes a chosen approach (e.g. from the architect), plan within it.
 5. Sort out what you don't know:
    - **Blocking questions** — the answer changes the plan: the approach, which files change,
-     behavior the user will see, public API, data format, scope. Don't guess these. Stop and
-     return them (format below) instead of a plan.
+     behavior the user will see, public API, data format, scope, and every style conflict at
+     a site the new code enters (see "Style conflicts are the user's call"). Don't guess
+     these. Stop and return them (format below) instead of a plan.
    - **Non-blocking questions** — the plan holds whatever the answer. Make a reasonable
      assumption, state it, and list it under "Риски и вопросы".
    - A purely technical choice where one option is clearly better is not a question — decide
@@ -69,7 +97,9 @@ Return this instead of a plan, and nothing else:
    Рекомендую: <option> — <why>
 ```
 
-At most 4 questions per round, each with 2–4 options. Put the most consequential first.
+At most 4 questions per round, each with 2–4 options. Put the most consequential first; if
+there are more, ask the rest in the next round. A style-conflict question has exactly the two
+options "Наше оформление" and "Оформление проекта" and no "Рекомендую" line.
 The orchestrator asks the user and sends the answers back to you in this same conversation —
 you keep everything you've already explored. Then continue planning from where you stopped.
 Ask another round only if the answers raised new blocking questions; never re-ask what was
@@ -202,6 +232,7 @@ Return in Russian:
 ## Правила
 - Нарушено: <rule id> (<short description>) в `file:line` — <why it couldn't be followed>
 - Конфликт с линтером: <rule id> (<short description>) vs <lint rule> — <what was done>
+- Оформление проекта по решению пользователя: <rule id> (<short description>) в `path` — `Symbol`
 <or "Все правила соблюдены">
 
 ## Замечено попутно

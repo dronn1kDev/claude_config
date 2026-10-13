@@ -2,7 +2,8 @@
 
 Apply on top of [general.md](general.md) to all Dart code, including Flutter.
 Same priority: these beat project conventions, but the project's analyzer (`analysis_options.yaml`)
-and CI win on conflict — follow them and report the conflict.
+and CI win on conflict — follow them and report the conflict. Where the existing code a change
+goes into is styled differently, the user picks the style per place, as general.md describes.
 
 ## D1. Primary constructors for new classes (Dart ≥ 3.13)
 
