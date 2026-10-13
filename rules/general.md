@@ -100,7 +100,15 @@ Comments explain intent, constraints, and non-obvious decisions — not what the
 Don't leave commented-out code, debug output (`print`, `console.log`), or TODOs without a
 ticket reference.
 
-*Why:* the code already says what; only a comment can say why. Leftovers rot.
+**Doc comments only when the task is documentation.** Doc comments — `///` in Dart, `/** */`
+in Java/Kotlin/JS/TS, docstrings in Python, and the like — are written only when the task
+explicitly asks to document the code. Otherwise don't add them to new code, and don't extend
+existing ones. When an existing doc comment on code you change becomes false, fix that
+statement and nothing more. A non-obvious "why" that can't wait for documentation goes into
+an ordinary comment next to the line it explains.
+
+*Why:* the code already says what; only a comment can say why. Leftovers rot. A doc comment
+written along the way mostly retells the name and the body, and goes stale with them.
 
 ## G11. Never swallow errors
 
