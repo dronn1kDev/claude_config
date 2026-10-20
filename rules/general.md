@@ -49,6 +49,13 @@ Fields, variables, methods, and classes get names that say what they are or do, 
 than four words** (`userName`, `loadOrderHistory`, `maxRetryCount`). If a good name needs more,
 the thing is probably doing too much.
 
+A class whose behaviour applies only to one customer, build, or platform says so in its name
+(`JKBWalletCardsFilter`), so the restriction is visible at every call site and needs no comment.
+To stay within four words, drop details from the class name and carry them in member names
+instead: the filter is `JKBWalletCardsFilter`, and what it filters by lives in
+`excludedStatusCodes`. A collection's name says what the code does with it (`excluded…`),
+not only what it holds.
+
 *Why:* names are most of the documentation code ever gets.
 
 ## G4. Booleans read as questions
@@ -68,7 +75,8 @@ Nesting deeper than **2–3 levels** must be restructured.
 ## G6. At most 3–4 parameters
 
 A function takes no more than three or four parameters. Beyond that, group related ones into
-an object (a parameters class, a record, a config).
+an object (a parameters class, a record, a config). Optional named parameters with a default
+value don't count toward the limit — callers don't pass them, so they can't be mixed up.
 
 *Why:* long parameter lists get called with arguments in the wrong order.
 
@@ -76,6 +84,10 @@ an object (a parameters class, a record, a config).
 
 Literals with meaning become named constants: `maxRetryCount = 3`, not a bare `3`.
 Obvious values (`0`, `1`, empty string, `-1` as "not found" where idiomatic) are fine inline.
+
+Elements of a named collection of codes stay literals, each with a short comment saying what
+the code means — no separate constant per element. A separate named constant is for a value
+used on its own or in more than one place.
 
 *Why:* the name explains the value and gives one place to change it.
 
@@ -89,14 +101,17 @@ Methods that return a boolean follow G4: `isValid()`, `hasPermission()`, `canSub
 ## G9. No abbreviations
 
 Write words in full: `button`, not `btn`; `message`, not `msg`; `index`, not `idx`.
-Allowed: universally known abbreviations (`id`, `url`, `api`, `json`, `http`, `ui`) and
-conventional loop counters (`i`, `j`) in short loops.
+Allowed: universally known abbreviations (`id`, `url`, `api`, `json`, `http`, `ui`),
+conventional loop counters (`i`, `j`) in short loops, and names of customers, products, and
+brands spelled the way they spell themselves (`JKB`).
 
 *Why:* abbreviations save typing once and cost reading every time.
 
 ## G10. Comments explain why; no leftovers
 
 Comments explain intent, constraints, and non-obvious decisions — not what the next line does.
+One "what" comment is allowed: the meaning of a literal code in a collection (G7), since the
+code itself can't show it.
 Don't leave commented-out code, debug output (`print`, `console.log`), or TODOs without a
 ticket reference.
 

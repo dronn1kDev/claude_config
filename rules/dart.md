@@ -71,3 +71,36 @@ prefix the commands with `fvm`. Fix what you introduced; report pre-existing iss
 of fixing them (G13).
 
 *Why:* the rules above are worthless if the code doesn't pass the project's own checks.
+
+## D9. Hardcoded values as constructor defaults
+
+When a class works with a hardcoded set of values (codes, statuses, ids), it takes
+that set as a named constructor parameter whose default value is the hardcoded set. Don't put
+such values in private static or top-level constants.
+
+A single hardcoded value is not a set — it stays a named constant per G7. In Dart a named
+constant is not only `const`: any named value that never changes counts, `final` included.
+Inside a class a `final` field is enough (`final int maxRetryCount = 3;`). Reach for
+`static const` or a top-level `const` only when the value is needed without an instance —
+in another constant expression, or shared between classes.
+
+```dart
+class const JKBWalletCardsFilter({
+  final Set<int> excludedStatusCodes = const {
+    // permanently blocked by user
+    21,
+    // permanently blocked by operator
+    22,
+  },
+}) implements AHiddenCardsFilter { ... }
+```
+
+Call sites use the default; a different set can be passed without changing the class.
+
+Below Dart 3.13 (no primary constructors, D1), do the same with a classic `const` constructor
+and a named parameter with the default. If the same set is needed by several classes, keep it
+in one shared constant and use that constant as the default (`= blockedStatusCodes`) instead
+of copying the literals.
+
+*Why:* the hardcoded values are visible in the class signature, and the class stays reusable
+and testable with other values.
