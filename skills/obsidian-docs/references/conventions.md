@@ -7,7 +7,7 @@ Used only where the vault or project has no rule of its own. Existing practice w
 - **File name = note title**, human-readable, in the note's language:
   `Оплата картой.md`, `Elden Ring — билд на кровотечение.md`. No dates in names, except
   dated notes: research and meetings get a `YYYY-MM-DD ` prefix.
-- **Folders by area, not by type**: `Работа/ZigZag/`, `Игры/`, `Дом/`. The type lives in
+- **Folders by area, not by type**: `Работа/Acme/`, `Игры/`, `Дом/`. The type lives in
   frontmatter, so one area holds its features, decisions, and guides together.
 - **One index note per area (MOC)** named after the area (`Игры/Игры.md`): a short intro and
   links to the area's notes, grouped by type or sub-topic. With Dataview installed, a query
@@ -34,7 +34,7 @@ aliases: [кровотечение билд]   # optional, alternative names to 
 
 ## Tags
 
-- Latin, lowercase, kebab-case; hierarchy with `/`: `work/zigzag`, `games/elden-ring`,
+- Latin, lowercase, kebab-case; hierarchy with `/`: `work/acme`, `games/elden-ring`,
   `flutter/state`.
 - Tags are for topics. The note's kind is `type`, its state is `status` — not tags.
 - At most five per note. Reuse existing tags before inventing new ones.

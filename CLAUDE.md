@@ -14,7 +14,7 @@
 
 ## Writing code
 
-- Any code-writing task goes to the `engineer` subagent. The only exception is a trivial 1–2 line edit, which you make yourself — but still by the rules in `/Users/dronn1k/claude_config/rules/` (`general.md` plus the language file; read them first).
+- Any code-writing task goes to the `engineer` subagent. The only exception is a trivial 1–2 line edit, which you make yourself — but still by the rules in `~/.claude/claude_config/rules/` (`general.md` plus the language file; read them first).
 - The engineer never works without a plan the user approved. Flow:
   1. Run `engineer` without an approved plan, before entering plan mode — its PLAN phase is read-only anyway. It returns one of: a plan followed by "# Справка для исполнителя" (a handoff of facts it found); "Вопросы перед планом"; or "Изменений не требуется". If the user already chose an approach (e.g. an `architect` option), pass it along.
   2. If it returned questions: ask the user with AskUserQuestion (outside plan mode) — one question per item, its options as options, the recommended one first and marked "(Recommended)". Style-conflict questions ("Наше оформление" vs "Оформление проекта" at a given place) go to the user as they are, with no recommendation; never answer them yourself or carry an earlier answer over to another place. Send the answers to the same engineer (SendMessage) so it continues with its context; repeat until it returns a plan or "Изменений не требуется".

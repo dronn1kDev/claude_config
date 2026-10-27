@@ -24,7 +24,7 @@ Pull out of the user's message:
 - **Save** — "сохрани", "в обсидиан", "в research" → save; "не сохраняй" → don't; otherwise
   offer it in one plain-text line after the answer (step 6).
 
-**Check earlier research first.** List `/Users/dronn1k/claude_config/research/` and grep it
+**Check earlier research first.** List `~/.claude/claude_config/research/` and grep it
 for the topic. If a related note exists, read it, tell the user in one line, and use it:
 skip what is already settled, and have the analysts focus on what is new or was left open.
 
@@ -131,7 +131,7 @@ e.g. «Сохранить в Obsidian? Скажи „сохрани", если �
 the user replies in chat only if they want it saved. Keep the analysts' full reports in
 context until then, so a later "сохрани" can still write them.
 
-To save, write `/Users/dronn1k/claude_config/research/<YYYY-MM-DD> <short title>.md`:
+To save, write `~/.claude/claude_config/research/<YYYY-MM-DD> <short title>.md`:
 
 ```markdown
 ---
