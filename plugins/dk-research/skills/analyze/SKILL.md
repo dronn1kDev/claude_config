@@ -27,10 +27,6 @@ Talk to the user in the language they chose for this kit:
    headings and labels of the answer. Templates below show Russian headings and labels as a
    sample — translate them into the chosen language, keeping the structure.
 
-**Research folder.** Saved research lives in `${user_config.research_dir}`. If the path between
-those backticks is empty or still starts with `${` (the option was not set), use
-`${CLAUDE_PLUGIN_DATA}/research` instead. Below, «the research folder» means this path.
-
 ## 1. Read the request
 
 Pull out of the user's message:
@@ -42,12 +38,6 @@ Pull out of the user's message:
   "по трём направлениям: …"). Take them as given, any number.
 - **Depth** — "быстро", "на скорую руку" → quick; "глубоко", "основательно", "подробно" →
   deep; otherwise **standard**.
-- **Save** — "сохрани", "в обсидиан", "в research" → save; "не сохраняй" → don't; otherwise
-  offer it in one plain-text line after the answer (step 6).
-
-**Check earlier research first.** List the research folder (if it exists) and grep it
-for the topic. If a related note exists, read it, tell the user in one line, and use it:
-skip what is already settled, and have the analysts focus on what is new or was left open.
 
 ## 2. Settle the width (and goal, if unclear)
 
@@ -93,7 +83,6 @@ Goal: <what the answer is for>
 Path: <name> — <what this path covers and what it does NOT cover (the other paths)>
 Depth: <quick|standard|deep>
 Sources: <which fit this path: web / project code at <path> / Notion / Gmail>
-Prior research: <summary of a related note from the research folder, or "none">
 Language: <the chosen language>
 ```
 
@@ -147,35 +136,3 @@ the chosen language, in this shape (headings translated):
 - End "Открытые вопросы" with an offer the user can accept in one phrase, e.g.
   «Могу копнуть путь „миграция" глубже».
 - If an analyst failed or ran out of budget, say which path is incomplete and why.
-
-## 6. Save (offer unless told)
-
-If the user didn't say whether to save, end the answer with one plain-text line offering it,
-e.g. «Сохранить в Obsidian? Скажи „сохрани", если нужно.» Don't use AskUserQuestion here —
-the user replies in chat only if they want it saved. Keep the analysts' full reports in
-context until then, so a later "сохрани" can still write them.
-
-To save, create the research folder if it doesn't exist (`mkdir -p`) and write
-`<research folder>/<YYYY-MM-DD> <short title>.md`:
-
-```markdown
----
-type: research
-date: <YYYY-MM-DD>
-question: "<the question>"
-goal: "<goal>"
-paths: [<path 1>, <path 2>]
-depth: <quick|standard|deep>
-tags: [research]
----
-
-<the merged answer from step 5>
-
-## Отчёты по путям
-
-<each analyst's full report, as returned>
-```
-
-If a related note was found in step 1, link it with `[[<note name>]]` in a "Связанное"
-line under the frontmatter — inside research notes wiki-links are the right tool, since
-they live in Obsidian.

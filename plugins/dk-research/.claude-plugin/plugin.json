@@ -3,13 +3,5 @@
   "description": "Structured research: the analyze skill settles width and depth and runs analyst subagents in parallel, then merges their findings with confidence levels and sources.",
   "author": {
     "name": "dronn1k"
-  },
-  "userConfig": {
-    "research_dir": {
-      "type": "directory",
-      "title": "Research folder",
-      "description": "Folder for saved research notes. Leave empty to keep them in the plugin's data folder.",
-      "required": false
-    }
   }
 }
