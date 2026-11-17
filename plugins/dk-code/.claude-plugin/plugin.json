@@ -1,0 +1,7 @@
+{
+  "name": "dk-code",
+  "description": "Plan-first coding: the engineer agent writes code by bundled coding rules only after the user approves a plan, the architect agent proposes and reviews solutions, the code-flow skill runs the protocol.",
+  "author": {
+    "name": "dronn1k"
+  }
+}

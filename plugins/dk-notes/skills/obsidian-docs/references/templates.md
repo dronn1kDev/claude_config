@@ -1,6 +1,7 @@
 # Templates by note type
 
-Section skeletons. Section names are in Russian; follow the note's language otherwise.
+Section skeletons. Section names are Russian samples; in a note in another language,
+translate them, keeping the structure.
 Drop a section that would be empty — never pad it. Frontmatter per
 [conventions.md](conventions.md), with `type` set to the template's name.
 

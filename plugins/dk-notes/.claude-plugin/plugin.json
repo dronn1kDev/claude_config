@@ -1,0 +1,7 @@
+{
+  "name": "dk-notes",
+  "description": "The obsidian-docs skill: write or reformat documentation and notes as Markdown in an Obsidian vault or a project's docs folder.",
+  "author": {
+    "name": "dronn1k"
+  }
+}

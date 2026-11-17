@@ -1,0 +1,29 @@
+{
+  "name": "dronn1k-kit",
+  "description": "Skills and agents for research, code, notes and change reports in Claude Code.",
+  "owner": {
+    "name": "dronn1k"
+  },
+  "plugins": [
+    {
+      "name": "dk-research",
+      "source": "./plugins/dk-research",
+      "description": "Structured research: the analyze skill settles width and depth and runs analyst subagents in parallel, then merges their findings with confidence levels and sources."
+    },
+    {
+      "name": "dk-code",
+      "source": "./plugins/dk-code",
+      "description": "Plan-first coding: the engineer agent writes code by bundled coding rules only after the user approves a plan, the architect agent proposes and reviews solutions, the code-flow skill runs the protocol."
+    },
+    {
+      "name": "dk-notes",
+      "source": "./plugins/dk-notes",
+      "description": "The obsidian-docs skill: write or reformat documentation and notes as Markdown in an Obsidian vault or a project's docs folder."
+    },
+    {
+      "name": "dk-report",
+      "source": "./plugins/dk-report",
+      "description": "The change-report skill: turn a finished code change into a feature-level, non-technical task report."
+    }
+  ]
+}

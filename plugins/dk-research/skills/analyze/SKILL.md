@@ -1,6 +1,6 @@
 ---
 name: analyze
-description: Run a structured analysis or research of a question — settle its width (which paths/angles to investigate, 1–3 by default) and depth (quick / standard / deep), launch one `analyst` subagent per path in parallel, then merge their findings into one answer with confidence levels and sources. Use this whenever the user asks to analyze, research, investigate, study, or compare something — "проанализируй", "исследуй", "изучи вопрос", "разберись, что лучше", "сделай ресёрч", "analyze", "research", "investigate" — even if they don't mention width or depth. Not for static code analysis tools (flutter/dart analyze, linters) or for reviewing a diff.
+description: Run a structured analysis or research of a question — settle its width (which paths/angles to investigate, 1–3 by default) and depth (quick / standard / deep), launch one `dk-research:analyst` subagent per path in parallel, then merge their findings into one answer with confidence levels and sources. Use this whenever the user asks to analyze, research, investigate, study, or compare something — "проанализируй", "исследуй", "изучи вопрос", "разберись, что лучше", "сделай ресёрч", "analyze", "research", "investigate" — even if they don't mention width or depth. Not for static code analysis tools (flutter/dart analyze, linters) or for reviewing a diff.
 ---
 
 # Analyze
@@ -9,6 +9,27 @@ The user wants answers they can act on, and two things decide the shape of the w
 **width** — which paths the research goes down — and **depth** — how long it takes and how
 well-verified the result is. The user picks the width; depth defaults to standard. Everything
 else here is about running the paths in parallel and merging them honestly.
+
+## 0. Language
+
+Talk to the user in the language they chose for this kit:
+
+1. Read `~/.config/dronn1k-kit/language` (`cat ~/.config/dronn1k-kit/language 2>/dev/null`).
+   Its single line is the language name, e.g. `Русский` or `English`.
+2. If the file is missing or empty, or the user asks to change the language ("смени язык",
+   "change language"), ask with AskUserQuestion, phrased in the language of the user's
+   message: which language to talk in. Options: «Русский», «English», and «the language of
+   this message» (named in that language); AskUserQuestion's own "Other" lets the user type
+   any language. Resolve the answer to a language name, then
+   `mkdir -p ~/.config/dronn1k-kit` and write that name to `~/.config/dronn1k-kit/language`,
+   replacing what was there.
+3. Use that language for everything you say to the user here: questions, announcements, the
+   headings and labels of the answer. Templates below show Russian headings and labels as a
+   sample — translate them into the chosen language, keeping the structure.
+
+**Research folder.** Saved research lives in `${user_config.research_dir}`. If the path between
+those backticks is empty or still starts with `${` (the option was not set), use
+`${CLAUDE_PLUGIN_DATA}/research` instead. Below, «the research folder» means this path.
 
 ## 1. Read the request
 
@@ -24,7 +45,7 @@ Pull out of the user's message:
 - **Save** — "сохрани", "в обсидиан", "в research" → save; "не сохраняй" → don't; otherwise
   offer it in one plain-text line after the answer (step 6).
 
-**Check earlier research first.** List `~/.claude/claude_config/research/` and grep it
+**Check earlier research first.** List the research folder (if it exists) and grep it
 for the topic. If a related note exists, read it, tell the user in one line, and use it:
 skip what is already settled, and have the analysts focus on what is new or was left open.
 
@@ -54,7 +75,8 @@ One line to the user before launching, so they know what to expect:
 
 > Запускаю 3 аналитика (цена, поддержка, миграция), глубина: стандарт, ~5–10 мин.
 
-Then launch **all paths in one message**, one Agent call per path, `subagent_type: "analyst"`,
+Then launch **all paths in one message**, one Agent call per path,
+`subagent_type: "dk-research:analyst"`,
 running in the background. Pick the model by depth:
 
 | Depth | `model` | Budget per path | Expected wait |
@@ -71,7 +93,8 @@ Goal: <what the answer is for>
 Path: <name> — <what this path covers and what it does NOT cover (the other paths)>
 Depth: <quick|standard|deep>
 Sources: <which fit this path: web / project code at <path> / Notion / Gmail>
-Prior research: <summary of a related note from research/, or "none">
+Prior research: <summary of a related note from the research folder, or "none">
+Language: <the chosen language>
 ```
 
 Choose sources per path: public facts → web; "how it works in our project" → project code;
@@ -82,14 +105,15 @@ While the analysts run, stay available — the user may add context or change th
 
 ## 4. Deep only: critic pass
 
-When all paths are done at depth **deep**, launch one more `analyst` with the draft
+When all paths are done at depth **deep**, launch one more `dk-research:analyst` (with the
+same `Language:` line) with the draft
 conclusions from all paths under "Draft conclusions to challenge" (critic mode). Fold its
 result into the synthesis: downgrade or drop conclusions it breaks, and say so.
 
 ## 5. Merge and answer
 
 Don't paste the analysts' reports one after another — the value is in the merge. Answer in
-the user's language, in this shape:
+the chosen language, in this shape (headings translated):
 
 ```
 ## <Вопрос, коротко>
@@ -116,7 +140,7 @@ the user's language, in this shape:
 ```
 
 - Keep the labels from the analysts: confidence (высокая / средняя / низкая) and type
-  (факт / вывод / предположение). Raise confidence only when independent paths agree;
+  (факт / вывод / предположение), written in the chosen language. Raise confidence only when independent paths agree;
   lower it when they conflict.
 - Renumber sources into one list; drop duplicates.
 - Drop "Где расходятся" if nothing conflicts — but say so in one line; agreement is a finding.
@@ -131,7 +155,8 @@ e.g. «Сохранить в Obsidian? Скажи „сохрани", если �
 the user replies in chat only if they want it saved. Keep the analysts' full reports in
 context until then, so a later "сохрани" can still write them.
 
-To save, write `~/.claude/claude_config/research/<YYYY-MM-DD> <short title>.md`:
+To save, create the research folder if it doesn't exist (`mkdir -p`) and write
+`<research folder>/<YYYY-MM-DD> <short title>.md`:
 
 ```markdown
 ---
@@ -153,4 +178,4 @@ tags: [research]
 
 If a related note was found in step 1, link it with `[[<note name>]]` in a "Связанное"
 line under the frontmatter — inside research notes wiki-links are the right tool, since
-they live in Obsidian. The `research/` folder is gitignored, so saved notes stay local.
+they live in Obsidian.

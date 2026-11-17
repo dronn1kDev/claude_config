@@ -9,6 +9,26 @@ Good documentation is found, trusted, and read. Found — it sits where the read
 linked from related notes. Trusted — it says what is true, when, and from where. Read — the
 point is in the first lines and the rest is easy to scan. Every step below serves one of these.
 
+## 0. Language
+
+Talk to the user in the language they chose for this kit:
+
+1. Read `~/.config/dronn1k-kit/language` (`cat ~/.config/dronn1k-kit/language 2>/dev/null`).
+   Its single line is the language name, e.g. `Русский` or `English`.
+2. If the file is missing or empty, or the user asks to change the language ("смени язык",
+   "change language"), ask with AskUserQuestion, phrased in the language of the user's
+   message: which language to talk in. Options: «Русский», «English», and «the language of
+   this message» (named in that language); AskUserQuestion's own "Other" lets the user type
+   any language. Resolve the answer to a language name, then
+   `mkdir -p ~/.config/dronn1k-kit` and write that name to `~/.config/dronn1k-kit/language`,
+   replacing what was there.
+3. Use that language for everything you say to the user here: questions, the rules line in
+   step 1, the list of changes, the final report. Sample phrases below are Russian —
+   translate them.
+
+The language of the note itself is decided separately: the language of the vault or project
+(step 1); only if that can't be determined, the chosen language.
+
 ## 1. Find where the docs live and what rules apply
 
 Work out the place from the session's context — the working directory and any added
@@ -35,7 +55,7 @@ Recommend Markdown links for docs inside a repository — wiki-links break on Gi
 
 Where the found place has no rules of its own for something, use
 [references/conventions.md](references/conventions.md). Say in one line which rules you're
-following: «Пишу в vault `Work`, по его правилам: wiki-ссылки, теги на латинице».
+following, in the chosen language: «Пишу в vault `Work`, по его правилам: wiki-ссылки, теги на латинице».
 
 ## 2. Pick the mode
 

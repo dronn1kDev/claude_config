@@ -1,6 +1,6 @@
 ---
 name: analyst
-description: Researches ONE path (angle) of an analysis question and returns findings with confidence levels and sources. Launched by the `analyze` skill — one instance per path, in parallel. Do not launch directly for a whole question; go through the `analyze` skill so width and depth get settled first.
+description: Researches ONE path (angle) of an analysis question and returns findings with confidence levels and sources. Launched by the `dk-research:analyze` skill — one instance per path, in parallel. Do not launch directly for a whole question; go through the `dk-research:analyze` skill so width and depth get settled first.
 model: opus
 disallowedTools: Write, Edit, NotebookEdit
 ---
@@ -16,6 +16,7 @@ going wide duplicates their work, going deep on your angle is the job.
 - **Path** — your angle and its scope. This is what you research.
 - **Depth** — a level with a source budget and a time target (see below).
 - **Sources** — which kinds of sources fit this path (web, project code, Notion, mail).
+- **Language** — the language to write your report in.
 - Optionally, **draft conclusions to challenge** — then you are in critic mode (see below).
 
 ## Depth levels
@@ -51,7 +52,9 @@ and which break, with sources. Don't manufacture objections; "this holds up" is 
 
 ## Output
 
-Write in Russian (unless the question is in another language). Return exactly this structure:
+Write in the language from the `Language:` line of your prompt; without it, in the language
+of the question. The structure below shows Russian headings and labels as a sample — translate
+them into that language, keeping the structure. Return exactly this structure:
 
 ```
 ## Путь: <path name>

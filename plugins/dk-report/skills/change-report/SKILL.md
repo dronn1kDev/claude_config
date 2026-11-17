@@ -5,6 +5,25 @@ description: Turn a completed code change into a non-technical, feature-level ta
 
 # Feature-level change report
 
+## Language
+
+Talk to the user in the language they chose for this kit:
+
+1. Read `~/.config/dronn1k-kit/language` (`cat ~/.config/dronn1k-kit/language 2>/dev/null`).
+   Its single line is the language name, e.g. `Русский` or `English`.
+2. If the file is missing or empty, or the user asks to change the language ("смени язык",
+   "change language"), ask with AskUserQuestion, phrased in the language of the user's
+   message: which language to talk in. Options: «Русский», «English», and «the language of
+   this message» (named in that language); AskUserQuestion's own "Other" lets the user type
+   any language. Resolve the answer to a language name, then
+   `mkdir -p ~/.config/dronn1k-kit` and write that name to `~/.config/dronn1k-kit/language`,
+   replacing what was there.
+3. Use that language for everything you say to the user around the report: questions (e.g.
+   whether a file belongs to the task) and comments.
+
+The chosen language does not apply to the report itself: the report is in English by default,
+and in another language only when the user asks for it (see step 5).
+
 ## Why this exists
 
 After a change is finished, the person who has to read about it is usually not the person
@@ -98,8 +117,9 @@ Counts, what was and was not verified, and any known blockers.
 - **"Intentionally excluded" is not optional filler.** When a reviewer notices an untouched
   spot that looks similar, their first assumption is that it was missed. Naming those spots
   up front prevents that whole round trip.
-- Default to English. If the user asks for another language, write the report in that language
-  and keep the same structure.
+- Write the report in English by default, whatever language you talk to the user in. If the
+  user asks for another language, write the report in that language and keep the same
+  structure.
 - Output the report as markdown in the chat reply so it can be pasted straight into a merge
   request or ticket. Only write it to a file if the user asks for a file.
 

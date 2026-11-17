@@ -1,0 +1,7 @@
+{
+  "name": "dk-report",
+  "description": "The change-report skill: turn a finished code change into a feature-level, non-technical task report.",
+  "author": {
+    "name": "dronn1k"
+  }
+}

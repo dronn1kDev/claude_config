@@ -4,28 +4,8 @@
 
 - Write commit messages in English.
 
-## Analysis and research
+## Skills from dronn1k-kit
 
-- When asked to analyze, research, or investigate a question ("проанализируй", "исследуй", "изучи", "ресёрч"), use the `analyze` skill. It settles width (paths) with the user, defaults depth to standard, and runs `analyst` subagents in parallel.
-
-## Architecture
-
-- When asked for solution options ("как лучше сделать", "предложи варианты") or to review a solution for flaws and uncovered cases, delegate to the `architect` subagent instead of answering directly. It doesn't see the conversation, so pass the mode (options/review), the task, constraints, what's already decided, and relevant file paths or the solution text. Relay its result without trimming the scenarios; if it gives options, offer the user a choice.
-
-## Writing code
-
-- Any code-writing task goes to the `engineer` subagent. The only exception is a trivial 1–2 line edit, which you make yourself — but still by the rules in `~/.claude/claude_config/rules/` (`general.md` plus the language file; read them first).
-- The engineer never works without a plan the user approved. Flow:
-  1. Run `engineer` without an approved plan, before entering plan mode — its PLAN phase is read-only anyway. It returns one of: a plan followed by "# Справка для исполнителя" (a handoff of facts it found); "Вопросы перед планом"; or "Изменений не требуется". If the user already chose an approach (e.g. an `architect` option), pass it along.
-  2. If it returned questions: ask the user with AskUserQuestion (outside plan mode) — one question per item, its options as options, the recommended one first and marked "(Recommended)". Style-conflict questions ("Наше оформление" vs "Оформление проекта" at a given place) go to the user as they are, with no recommendation; never answer them yourself or carry an earlier answer over to another place. Send the answers to the same engineer (SendMessage) so it continues with its context; repeat until it returns a plan or "Изменений не требуется".
-  3. If it returned "Изменений не требуется": relay its findings to the user as an analysis answer — no plan mode, no plan file, no ExitPlanMode. Items under "Замечено попутно" can be offered as follow-ups.
-  4. Once it returns a plan: enter plan mode (EnterPlanMode), write only the plan — from `# План:` up to `# Справка для исполнителя` — to the plan file unchanged, and call ExitPlanMode so the user approves it in the plan UI. Keep the handoff; don't show it to the user unless they ask.
-  5. On feedback (plan mode stays on), send it to the same engineer (SendMessage) for a revised plan (it may ask questions again — step 2), rewrite the plan file and call ExitPlanMode again. Always use the handoff from its latest answer.
-  6. Only after approval, run a new `engineer` with, verbatim: `Task:` — the user's original request; `Approved plan:` — the approved plan; `Handoff (facts, not approved; plan wins):` — the latest handoff. Never paraphrase or trim the plan or the handoff. Never pass `Approved plan:` for a plan the user hasn't approved.
-  7. If the engineer stops on a material deviation, its amendment goes through approval the same way. The next engineer gets the task, the plan, the approved amendment, the handoff, and the previous engineer's report on what is already done.
-- A plan the user wrote themselves and told you to execute counts as approved.
-- Relay the engineer's report including rule violations and failed checks. The engineer never commits; commits happen only when the user asks.
-
-## Documentation and notes
-
-- When asked to document something, write a note or a guide, or tidy up an existing note, use the `obsidian-docs` skill — Markdown files in the Obsidian vault or the project's docs folder. Don't create Claude Docs or Word documents for this unless the user names that format.
+- Code: for any task that writes or changes code, and for questions about solution options or a review of a solution ("как лучше сделать", "предложи варианты", "посмотри решение на недочёты"), first load the `dk-code:code-flow` skill and work by it.
+- Analysis and research: when asked to analyze, research, or investigate a question ("проанализируй", "исследуй", "изучи", "ресёрч"), use the `dk-research:analyze` skill.
+- Documentation and notes: when asked to document something, write a note or a guide, or tidy up an existing note, use the `dk-notes:obsidian-docs` skill. Don't create Claude Docs or Word documents for this unless the user names that format.

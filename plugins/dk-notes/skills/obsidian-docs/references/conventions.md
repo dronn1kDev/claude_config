@@ -54,7 +54,8 @@ aliases: [кровотечение билд]   # optional, alternative names to 
 3. H2 sections, H3 at most. A section longer than a screen gets split or summarized.
 4. Short paragraphs; lists for enumerations; numbered lists for steps; tables for
    comparisons and parameters.
-5. Write in the language of the vault or project; Russian by default.
+5. Write in the language of the vault or project; if it can't be determined, in the language
+   from `~/.config/dronn1k-kit/language`.
 
 ## Obsidian features — when to use them
 
