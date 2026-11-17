@@ -1,19 +1,19 @@
 # dronn1k-kit
 
-Маркетплейс плагинов для Claude Code: скиллы и агенты для исследований, написания кода, заметок и отчётов об изменениях. Плагины ставятся через `/plugin`, лежат отдельно от вашей конфигурации и не трогают ваши `agents/`, `skills/` и `CLAUDE.md`.
+A Claude Code plugin marketplace: skills and agents for research, writing code, notes, and change reports. The plugins install through `/plugin`, live apart from your own configuration, and leave your `agents/`, `skills/`, and `CLAUDE.md` untouched.
 
-## Что входит
+## What's inside
 
-| Плагин | Что внутри |
+| Plugin | Contents |
 |---|---|
-| `dk-research` | Скилл `analyze`: согласует с вами ширину (пути) и глубину исследования, запускает агентов `analyst` параллельно и сводит их выводы в один ответ с уровнями уверенности и источниками. |
-| `dk-code` | Агент `engineer` пишет код по жёстким правилам из `rules/` и только по одобренному вами плану. Агент `architect` предлагает варианты решения и ищет недочёты в готовом. Скилл `code-flow` описывает, как оркестратор работает с ними: план, вопросы, одобрение, реализация. |
-| `dk-notes` | Скилл `obsidian-docs`: пишет или приводит в порядок заметки и документацию в Markdown — в хранилище Obsidian или в папке документации проекта. |
-| `dk-report` | Скилл `change-report`: превращает готовое изменение кода в отчёт по фичам для тех, кто не читает код (QA, аналитик, менеджер). |
+| `dk-research` | The `analyze` skill: agrees with you on the width (paths) and depth of a research question, runs `analyst` agents in parallel, and merges their findings into one answer with confidence levels and sources. |
+| `dk-code` | The `engineer` agent writes code by strict rules from `rules/`, and only from a plan you approved. The `architect` agent proposes solution options and looks for flaws in an existing solution. The `code-flow` skill describes how the orchestrator works with them: plan, questions, approval, implementation. |
+| `dk-notes` | The `obsidian-docs` skill: writes or tidies up notes and documentation in Markdown — in an Obsidian vault or in a project's docs folder. |
+| `dk-report` | The `change-report` skill: turns a finished code change into a feature-level report for people who don't read code (QA, analysts, managers). |
 
-## Установка
+## Installation
 
-В Claude Code:
+In Claude Code:
 
 ```
 /plugin marketplace add dronn1kDev/claude_config
@@ -23,39 +23,39 @@
 /plugin install dk-report@dronn1k-kit
 ```
 
-Ставить можно любой набор плагинов, они не зависят друг от друга. Если репозиторий приватный, Claude Code забирает его через git, поэтому нужен доступ к нему: SSH-ключ или авторизованный `gh`. Обновления приходят с каждым коммитом: номер версии в плагинах не задан.
+Install any combination — the plugins don't depend on each other. If the repository is private, Claude Code fetches it through git, so you need access to it: an SSH key or an authenticated `gh`. Updates arrive with every commit, since the plugins have no version number.
 
-## Как пользоваться
+## Usage
 
-Компоненты плагинов называются с префиксом плагина:
+Plugin components are named with the plugin prefix:
 
-- скиллы — `/dk-research:analyze`, `/dk-code:code-flow`, `/dk-notes:obsidian-docs`, `/dk-report:change-report`; Claude запускает их и сам, по описанию;
-- агенты — `dk-research:analyst`, `dk-code:engineer`, `dk-code:architect`.
+- skills — `/dk-research:analyze`, `/dk-code:code-flow`, `/dk-notes:obsidian-docs`, `/dk-report:change-report`; Claude also launches them on its own, by their descriptions;
+- agents — `dk-research:analyst`, `dk-code:engineer`, `dk-code:architect`.
 
-Чтобы протокол работы с `engineer` применялся к каждой задаче с кодом, добавьте в свой `~/.claude/CLAUDE.md` строку вроде «For any task that writes or changes code, first load the `dk-code:code-flow` skill and work by it». Сам `CLAUDE.md` из плагина не загружается.
+To apply the `engineer` protocol to every coding task, add a line like "For any task that writes or changes code, first load the `dk-code:code-flow` skill and work by it" to your `~/.claude/CLAUDE.md`. A plugin can't ship a `CLAUDE.md` of its own.
 
-**Язык.** При первом запуске любого скилла набора Claude спрашивает, на каком языке с вами общаться, и запоминает ответ в `~/.config/dronn1k-kit/language` — один файл на все плагины. Чтобы выбрать заново, скажите «смени язык» или «change language». Язык действует на общение и ответы агентов. Отчёт `change-report` по умолчанию пишется по-английски, заметки `obsidian-docs` — на языке хранилища или проекта.
+**Language.** The first time you run any skill in the kit, Claude asks which language to talk to you in and stores the answer in `~/.config/dronn1k-kit/language` — one file for all plugins. To choose again, say "change language" (or «смени язык»). The language applies to the conversation and to the agents' answers. `change-report` writes its report in English by default, and `obsidian-docs` writes notes in the language of the vault or project.
 
-## Что стоит знать
+## Good to know
 
-- Промпты написаны автором под себя: под его привычки, проекты и стек (правила кода есть для общего случая и для Dart/Flutter).
-- Все агенты работают на модели `opus` — это дорого.
-- Правила кода в `dk-code` жёсткие и важнее соглашений проекта, кроме требований линтера. Прежде чем ставить, прочитайте [general.md](plugins/dk-code/rules/general.md).
+- The prompts were written by the author for personal use: around the author's habits, projects, and stack (the code rules cover the general case and Dart/Flutter).
+- All agents run on the `opus` model, which is expensive.
+- The code rules in `dk-code` are strict and override the project's conventions, except where the linter requires otherwise. Read [general.md](plugins/dk-code/rules/general.md) before installing.
 
-## Структура репозитория
+## Repository layout
 
-- `.claude-plugin/marketplace.json` — описание маркетплейса.
-- `plugins/<плагин>/` — плагины: `.claude-plugin/plugin.json`, `skills/<имя>/SKILL.md`, `agents/<имя>.md`; у `dk-code` ещё `rules/` — правила кода: `general.md` для любого языка, `<язык>.md` для конкретного.
+- `.claude-plugin/marketplace.json` — the marketplace definition.
+- `plugins/<plugin>/` — the plugins: `.claude-plugin/plugin.json`, `skills/<name>/SKILL.md`, `agents/<name>.md`; `dk-code` also has `rules/` — the code rules: `general.md` for any language, `<language>.md` for a specific one.
 
-Ссылки внутри плагина — только на файлы этого же плагина: через `${CLAUDE_PLUGIN_ROOT}` или относительными путями.
+Links inside a plugin point only to files of the same plugin: through `${CLAUDE_PLUGIN_ROOT}` or relative paths.
 
-## Разработка
+## Development
 
-Подключите клон как локальный маркетплейс: `/plugin marketplace add <путь к клону>`, затем поставьте плагины, как в разделе «Установка». Плагины читаются прямо из клона, правки в `plugins/` подхватываются командой `/reload-plugins` без переустановки. Перед коммитом проверьте маркетплейс и плагины:
+Add your clone as a local marketplace with `/plugin marketplace add <path to clone>`, then install the plugins as in "Installation". The plugins are read straight from the clone, so edits in `plugins/` take effect after `/reload-plugins`, without reinstalling. Before committing, validate the marketplace and the plugins:
 
 ```bash
 claude plugin validate .
 for p in plugins/dk-*; do claude plugin validate "$p"; done
 ```
 
-Предупреждения о `version` ожидаемы: версия не задана намеренно.
+Warnings about `version` are expected: the version is left out on purpose.
