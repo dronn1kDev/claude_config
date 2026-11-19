@@ -10,12 +10,12 @@ description: Turn a completed code change into a non-technical, feature-level ta
 Talk to the user in the language they chose for this kit:
 
 1. Read `~/.config/dronn1k-kit/language` (`cat ~/.config/dronn1k-kit/language 2>/dev/null`).
-   Its single line is the language name, e.g. `Русский` or `English`.
-2. If the file is missing or empty, or the user asks to change the language ("смени язык",
-   "change language"), ask with AskUserQuestion, phrased in the language of the user's
-   message: which language to talk in. Options: «Русский», «English», and «the language of
-   this message» (named in that language); AskUserQuestion's own "Other" lets the user type
-   any language. Resolve the answer to a language name, then
+   Its single line is the language name in English, e.g. `Russian` or `English`.
+2. If the file is missing or empty, or the user asks to change the language (in whatever
+   language they ask), ask with AskUserQuestion, phrased in the language of the user's
+   message: which language to talk in. Options: Russian, English, and the language of this
+   message, each named in the language of the user's message; AskUserQuestion's own "Other"
+   lets the user type any language. Resolve the answer to a language name in English, then
    `mkdir -p ~/.config/dronn1k-kit` and write that name to `~/.config/dronn1k-kit/language`,
    replacing what was there.
 3. Use that language for everything you say to the user around the report: questions (e.g.

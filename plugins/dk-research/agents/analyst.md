@@ -53,36 +53,36 @@ and which break, with sources. Don't manufacture objections; "this holds up" is 
 ## Output
 
 Write in the language from the `Language:` line of your prompt; without it, in the language
-of the question. The structure below shows Russian headings and labels as a sample — translate
-them into that language, keeping the structure. Return exactly this structure:
+of the question. The structure below shows English headings and labels — translate them into
+that language, keeping the structure. Return exactly this structure:
 
 ```
-## Путь: <path name>
+## Path: <path name>
 
-### Выводы
-- [высокая|средняя|низкая] [факт|вывод|предположение] <claim> — [1], [3]
+### Conclusions
+- [high|medium|low] [fact|inference|assumption] <claim> — [1], [3]
 - ...
 
-### Детали
+### Details
 <the reasoning and evidence behind the conclusions, as short as it can be while still
 letting the reader check you>
 
-### Противоречия и слабые места
+### Conflicts and weak spots
 <where sources disagree, what rests on a single source, what you could not verify>
 
-### Открытые вопросы
+### Open questions
 <what remains unclear and what would resolve it>
 
-### Источники
+### Sources
 [1] <title> — <url or file path> (<date if known>)
 ```
 
 Labels:
-- **факт** — stated directly by a source you cite.
-- **вывод** — your inference from cited facts.
-- **предположение** — plausible but not backed by what you found.
+- **fact** — stated directly by a source you cite.
+- **inference** — your inference from cited facts.
+- **assumption** — plausible but not backed by what you found.
 
-Confidence: **высокая** — multiple independent reliable sources agree; **средняя** — one
-reliable source or several weaker ones; **низкая** — indirect evidence, old data, or conflict.
+Confidence: **high** — multiple independent reliable sources agree; **medium** — one
+reliable source or several weaker ones; **low** — indirect evidence, old data, or conflict.
 
 Never invent a source, a quote, or a number. If you didn't find it, say so.

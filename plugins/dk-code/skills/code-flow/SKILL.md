@@ -1,6 +1,6 @@
 ---
 name: code-flow
-description: The protocol for any task that writes or changes code — run the `dk-code:engineer` agent through a read-only planning phase, get the user's approval of its plan in plan mode, then run a fresh engineer to implement it. Load this before launching `dk-code:engineer` and for any request to write, fix, add, change, or refactor code ("напиши", "исправь", "добавь", "переделай", "отрефактори", "implement", "fix", "add", "refactor"). Also covers asking the `dk-code:architect` agent for solution options or a review of a solution ("как лучше сделать", "предложи варианты", "посмотри решение на недочёты").
+description: The protocol for any task that writes or changes code — run the `dk-code:engineer` agent through a read-only planning phase, get the user's approval of its plan in plan mode, then run a fresh engineer to implement it. Load this before launching `dk-code:engineer` and for any request to write, fix, add, change, or refactor code ("implement", "fix", "add", "change", "refactor", "write a function that…"). Also covers asking the `dk-code:architect` agent for solution options or a review of a solution ("what is the best way to do this", "suggest options", "review this solution for flaws").
 ---
 
 # Code flow
@@ -14,12 +14,12 @@ its answers, and how the plan gets approved.
 Talk to the user in the language they chose for this kit:
 
 1. Read `~/.config/dronn1k-kit/language` (`cat ~/.config/dronn1k-kit/language 2>/dev/null`).
-   Its single line is the language name, e.g. `Русский` or `English`.
-2. If the file is missing or empty, or the user asks to change the language ("смени язык",
-   "change language"), ask with AskUserQuestion, phrased in the language of the user's
-   message: which language to talk in. Options: «Русский», «English», and «the language of
-   this message» (named in that language); AskUserQuestion's own "Other" lets the user type
-   any language. Resolve the answer to a language name, then
+   Its single line is the language name in English, e.g. `Russian` or `English`.
+2. If the file is missing or empty, or the user asks to change the language (in whatever
+   language they ask), ask with AskUserQuestion, phrased in the language of the user's
+   message: which language to talk in. Options: Russian, English, and the language of this
+   message, each named in the language of the user's message; AskUserQuestion's own "Other"
+   lets the user type any language. Resolve the answer to a language name in English, then
    `mkdir -p ~/.config/dronn1k-kit` and write that name to `~/.config/dronn1k-kit/language`,
    replacing what was there.
 3. Use that language for everything you say to the user here, and pass it to every agent you
@@ -36,14 +36,13 @@ edit, which you make yourself — but still by the rules in `${CLAUDE_PLUGIN_ROO
 The engineer writes in the chosen language, so its headings are translated. Recognize each
 answer by its role, not by an exact string:
 
-- **Questions** — a first-level heading meaning "questions before the plan" (Russian
-  sample: «Вопросы перед планом»), then numbered questions, each with options and, except for style
-  questions, a line with the recommended option.
-- **No changes needed** — a first-level heading meaning "no changes needed" («Изменений не
-  требуется»), with the reasons and, optionally, a section of things noticed along the way
-  («Замечено попутно»).
+- **Questions** — a first-level heading meaning "Questions before the plan", then numbered
+  questions, each with options and, except for style questions, a line with the recommended
+  option.
+- **No changes needed** — a first-level heading meaning "No changes needed", with the reasons
+  and, optionally, a section of things noticed along the way.
 - **Plan** — an answer with exactly two first-level headings. The first opens the plan
-  («План: …»), the second opens the handoff («Справка для исполнителя»). The plan is
+  ("Plan: …"), the second opens the handoff ("Handoff for the implementer"). The plan is
   everything from the first heading up to the second; the handoff is everything from the
   second heading to the end. If the answer has a different number of first-level headings,
   don't guess where to cut: ask the same engineer (SendMessage) to resend it in that shape.
@@ -57,9 +56,9 @@ answer by its role, not by an exact string:
 2. If it returned questions: ask the user with AskUserQuestion (outside plan mode) — one
    question per item, its options as options, the recommended one first and marked
    "(Recommended)" in the chosen language. Style-conflict questions — exactly two options,
-   "our style" vs "the project's style" at a given place (Russian sample: «Наше оформление» /
-   «Оформление проекта») — go to the user as they are, with no recommendation; never answer
-   them yourself or carry an earlier answer over to another place. Send the answers to the
+   "Our style" vs "Project's style" at a given place — go to the user as they are, with no
+   recommendation; never answer them yourself or carry an earlier answer over to another
+   place. Send the answers to the
    same engineer (SendMessage) so it continues with its context; repeat until it returns a
    plan or "no changes needed".
 3. If it returned "no changes needed": relay its findings to the user as an analysis
@@ -96,7 +95,7 @@ answer by its role, not by an exact string:
 
 ## Architect
 
-When the user asks for solution options ("как лучше сделать", "предложи варианты") or for a
+When the user asks for solution options ("what is the best way to do this", "suggest options") or for a
 review of a solution for flaws and uncovered cases, delegate to the `dk-code:architect` agent
 instead of answering directly. It doesn't see the conversation, so pass the mode
 (options/review), the task, constraints, what's already decided, the relevant file paths or

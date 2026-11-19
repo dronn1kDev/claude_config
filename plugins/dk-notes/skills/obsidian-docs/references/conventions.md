@@ -5,11 +5,11 @@ Used only where the vault or project has no rule of its own. Existing practice w
 ## Files and folders
 
 - **File name = note title**, human-readable, in the note's language:
-  `Оплата картой.md`, `Elden Ring — билд на кровотечение.md`. No dates in names, except
+  `Card payment.md`, `Elden Ring — bleed build.md`. No dates in names, except
   dated notes: research and meetings get a `YYYY-MM-DD ` prefix.
-- **Folders by area, not by type**: `Работа/Acme/`, `Игры/`, `Дом/`. The type lives in
+- **Folders by area, not by type**: `Work/Acme/`, `Games/`, `Home/`. The type lives in
   frontmatter, so one area holds its features, decisions, and guides together.
-- **One index note per area (MOC)** named after the area (`Игры/Игры.md`): a short intro and
+- **One index note per area (MOC)** named after the area (`Games/Games.md`): a short intro and
   links to the area's notes, grouped by type or sub-topic. With Dataview installed, a query
   may replace the manual list.
 
@@ -25,7 +25,7 @@ updated: 2026-10-07
 related: ["[[Elden Ring]]"]
 source: https://…      # guides and references taken from the web; omit otherwise
 version: "1.16"        # what the facts apply to: game patch, app or library version; omit if n/a
-aliases: [кровотечение билд]   # optional, alternative names to find the note by
+aliases: [bleed build]   # optional, alternative names to find the note by
 ---
 ```
 
@@ -62,7 +62,7 @@ aliases: [кровотечение билд]   # optional, alternative names to 
 | Feature | Use for |
 |---|---|
 | `> [!note]` | side information worth noticing |
-| `> [!tip]` | tricks, shortcuts, "лайфхак" moments in guides |
+| `> [!tip]` | tricks, shortcuts, "life hack" moments in guides |
 | `> [!warning]` / `> [!danger]` | pitfalls, irreversible steps, things that break |
 | `> [!example]` | a worked example |
 | `> [!question]` | unknowns, unverified facts, open questions |

@@ -1,6 +1,6 @@
 ---
 name: analyze
-description: Run a structured analysis or research of a question — settle its width (which paths/angles to investigate, 1–3 by default) and depth (quick / standard / deep), launch one `dk-research:analyst` subagent per path in parallel, then merge their findings into one answer with confidence levels and sources. Use this whenever the user asks to analyze, research, investigate, study, or compare something — "проанализируй", "исследуй", "изучи вопрос", "разберись, что лучше", "сделай ресёрч", "analyze", "research", "investigate" — even if they don't mention width or depth. Not for static code analysis tools (flutter/dart analyze, linters) or for reviewing a diff.
+description: Run a structured analysis or research of a question — settle its width (which paths/angles to investigate, 1–3 by default) and depth (quick / standard / deep), launch one `dk-research:analyst` subagent per path in parallel, then merge their findings into one answer with confidence levels and sources. Use this whenever the user asks to analyze, research, investigate, study, or compare something — "analyze", "research", "investigate", "study the question", "figure out which is better" — even if they don't mention width or depth. Not for static code analysis tools (flutter/dart analyze, linters) or for reviewing a diff.
 ---
 
 # Analyze
@@ -15,17 +15,17 @@ else here is about running the paths in parallel and merging them honestly.
 Talk to the user in the language they chose for this kit:
 
 1. Read `~/.config/dronn1k-kit/language` (`cat ~/.config/dronn1k-kit/language 2>/dev/null`).
-   Its single line is the language name, e.g. `Русский` or `English`.
-2. If the file is missing or empty, or the user asks to change the language ("смени язык",
-   "change language"), ask with AskUserQuestion, phrased in the language of the user's
-   message: which language to talk in. Options: «Русский», «English», and «the language of
-   this message» (named in that language); AskUserQuestion's own "Other" lets the user type
-   any language. Resolve the answer to a language name, then
+   Its single line is the language name in English, e.g. `Russian` or `English`.
+2. If the file is missing or empty, or the user asks to change the language (in whatever
+   language they ask), ask with AskUserQuestion, phrased in the language of the user's
+   message: which language to talk in. Options: Russian, English, and the language of this
+   message, each named in the language of the user's message; AskUserQuestion's own "Other"
+   lets the user type any language. Resolve the answer to a language name in English, then
    `mkdir -p ~/.config/dronn1k-kit` and write that name to `~/.config/dronn1k-kit/language`,
    replacing what was there.
 3. Use that language for everything you say to the user here: questions, announcements, the
-   headings and labels of the answer. Templates below show Russian headings and labels as a
-   sample — translate them into the chosen language, keeping the structure.
+   headings and labels of the answer. Templates below show English headings and labels —
+   translate them into the chosen language, keeping the structure.
 
 ## 1. Read the request
 
@@ -34,9 +34,9 @@ Pull out of the user's message:
 - **Question** — what they want to know.
 - **Goal** — what decision or understanding the answer is for. Often implied; if it is
   genuinely unclear and would change what counts as important, ask (step 2).
-- **Width** — paths the user named explicitly ("посмотри с точки зрения цены и поддержки",
-  "по трём направлениям: …"). Take them as given, any number.
-- **Depth** — "быстро", "на скорую руку" → quick; "глубоко", "основательно", "подробно" →
+- **Width** — paths the user named explicitly ("look at it from the price and support angles",
+  "along three lines: …"). Take them as given, any number.
+- **Depth** — "quickly", "a rough take" → quick; "in depth", "thoroughly", "in detail" →
   deep; otherwise **standard**.
 
 ## 2. Settle the width (and goal, if unclear)
@@ -63,7 +63,7 @@ Don't ask about depth. Announce it instead (step 3) so the user can change it if
 
 One line to the user before launching, so they know what to expect:
 
-> Запускаю 3 аналитика (цена, поддержка, миграция), глубина: стандарт, ~5–10 мин.
+> Launching 3 analysts (price, support, migration), depth: standard, ~5–10 min.
 
 Then launch **all paths in one message**, one Agent call per path,
 `subagent_type: "dk-research:analyst"`,
@@ -105,34 +105,34 @@ Don't paste the analysts' reports one after another — the value is in the merg
 the chosen language, in this shape (headings translated):
 
 ```
-## <Вопрос, коротко>
+## <The question, briefly>
 
-**Коротко:** <the answer in 2–3 lines — what to do or what is true, with overall confidence>
+**In short:** <the answer in 2–3 lines — what to do or what is true, with overall confidence>
 
-*Ширина: <paths> · Глубина: <level> · <date>*
+*Width: <paths> · Depth: <level> · <date>*
 
-### Где пути сходятся
-- [уверенность] [факт|вывод|предположение] <conclusion supported from several paths> — [n]
+### Where the paths agree
+- [confidence] [fact|inference|assumption] <conclusion supported from several paths> — [n]
 
-### Где расходятся
+### Where they disagree
 - <conflict> — <which path says what, and which side the evidence favors, or why it's unresolved>
 
-### По путям
+### By path
 **<Path 1>** — <the 2–4 most important findings, with labels and sources>
 **<Path 2>** — …
 
-### Открытые вопросы
+### Open questions
 - <what is still unclear> → <which path to dig deeper, and how>
 
-### Источники
+### Sources
 [1] <title> — <url> (<date>)
 ```
 
-- Keep the labels from the analysts: confidence (высокая / средняя / низкая) and type
-  (факт / вывод / предположение), written in the chosen language. Raise confidence only when independent paths agree;
+- Keep the labels from the analysts: confidence (high / medium / low) and type
+  (fact / inference / assumption), written in the chosen language. Raise confidence only when independent paths agree;
   lower it when they conflict.
 - Renumber sources into one list; drop duplicates.
-- Drop "Где расходятся" if nothing conflicts — but say so in one line; agreement is a finding.
-- End "Открытые вопросы" with an offer the user can accept in one phrase, e.g.
-  «Могу копнуть путь „миграция" глубже».
+- Drop "Where they disagree" if nothing conflicts — but say so in one line; agreement is a finding.
+- End "Open questions" with an offer the user can accept in one phrase, e.g.
+  "I can dig deeper into the migration path."
 - If an analyst failed or ran out of budget, say which path is incomplete and why.

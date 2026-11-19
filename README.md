@@ -34,7 +34,7 @@ Plugin components are named with the plugin prefix:
 
 To apply the `engineer` protocol to every coding task, add a line like "For any task that writes or changes code, first load the `dk-code:code-flow` skill and work by it" to your `~/.claude/CLAUDE.md`. A plugin can't ship a `CLAUDE.md` of its own.
 
-**Language.** The first time you run any skill in the kit, Claude asks which language to talk to you in and stores the answer in `~/.config/dronn1k-kit/language` — one file for all plugins. To choose again, say "change language" (or «смени язык»). The language applies to the conversation and to the agents' answers. `change-report` writes its report in English by default, and `obsidian-docs` writes notes in the language of the vault or project.
+**Language.** The first time you run any skill in the kit, Claude asks which language to talk to you in and stores the answer in `~/.config/dronn1k-kit/language` — one file for all plugins. To choose again, say "change language" in any language. The language applies to the conversation and to the agents' answers. `change-report` writes its report in English by default, and `obsidian-docs` writes notes in the language of the vault or project.
 
 ## Good to know
 

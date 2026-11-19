@@ -1,6 +1,6 @@
 # Templates by note type
 
-Section skeletons. Section names are Russian samples; in a note in another language,
+Section skeletons. Section names are in English; in a note in another language,
 translate them, keeping the structure.
 Drop a section that would be empty — never pad it. Frontmatter per
 [conventions.md](conventions.md), with `type` set to the template's name.
@@ -11,29 +11,29 @@ Drop a section that would be empty — never pad it. Frontmatter per
 # <Feature as the user knows it>
 <1–3 lines: what it lets the user do>
 
-## Зачем
-## Как это выглядит для пользователя
+## Why
+## What the user sees
 <flow from the user's side; Mermaid for a multi-step flow>
-## Как устроено
+## How it works
 <components, data flow, links to code — file paths, not code dumps>
-## Состояния и ошибки
+## States and errors
 <table: state / when / what the user sees>
-## Ограничения
-## Связанное
+## Limitations
+## Related
 ```
 
 ## decision — an architecture or product decision (ADR)
 
 ```
-# <Decision as a statement: «Храним токены в Keychain»>
+# <Decision as a statement: "Store tokens in the Keychain">
 <1–2 lines: what was decided>
 
-## Контекст
+## Context
 <the problem and the forces at play>
-## Решение
-## Рассмотренные варианты
+## Decision
+## Options considered
 <table: option / pros / cons / why not>
-## Последствия
+## Consequences
 <what gets easier, what gets harder, what to watch>
 ```
 
@@ -42,14 +42,14 @@ Drop a section that would be empty — never pad it. Frontmatter per
 ## howto — instructions to get a task done
 
 ```
-# <Как сделать X>
+# <How to do X>
 <1 line: the result you'll have at the end>
 
-## Что нужно заранее
-## Шаги
+## Prerequisites
+## Steps
 1. …   ← one action per step; commands in code blocks
-## Как проверить
-## Если не получилось
+## How to check
+## If it didn't work
 <symptom → cause → fix>
 ```
 
@@ -60,26 +60,26 @@ Drop a section that would be empty — never pad it. Frontmatter per
 <1–2 lines: what's here and when to look>
 
 ## <Main table or list of facts>
-## Детали
-## Источники
+## Details
+## Sources
 ```
 
 ## research — results of an analysis
 
-Same format as the `analyze` skill produces (Коротко / Где пути сходятся / Где расходятся /
-По путям / Открытые вопросы / Источники). Keep the confidence and fact/inference labels.
+Same format as the `analyze` skill produces (In short / Where the paths agree / Where they disagree /
+By path / Open questions / Sources). Keep the confidence and fact/inference labels.
 
 ## meeting — notes from a meeting or call
 
 ```
 # YYYY-MM-DD <Topic>
-**Участники:** …
+**Participants:** …
 
-## Решения
-## Задачи
-- [ ] <кто> — <что> — <к какому сроку>
-## Обсуждали
-## Открытые вопросы
+## Decisions
+## Tasks
+- [ ] <who> — <what> — <by when>
+## Discussed
+## Open questions
 ```
 
 Decisions and tasks come first — that's what people come back for.
@@ -87,21 +87,21 @@ Decisions and tasks come first — that's what people come back for.
 ## guide — how to get good at something (games, life hacks, hobbies)
 
 ```
-# <What the guide achieves: «Elden Ring — билд на кровотечение»>
+# <What the guide achieves: "Elden Ring — bleed build">
 <1–3 lines: what you get and for whom>
 
-> [!info] Актуально для: <game patch / app version / date checked>
+> [!info] Valid for: <game patch / app version / date checked>
 
-## Что понадобится
-## Пошагово
-## Советы
+## What you need
+## Step by step
+## Tips
 > [!tip] …
-## Частые ошибки
+## Common mistakes
 > [!warning] …
-## Источники
+## Sources
 ```
 
-Guides go stale fastest: always fill `version` or the «Актуально для» line, and `source`.
+Guides go stale fastest: always fill `version` or the "Valid for" line, and `source`.
 
 ## note — anything that fits no other type
 
@@ -110,5 +110,5 @@ Guides go stale fastest: always fill `version` or the «Актуально дл�
 <1–3 lines: the point>
 
 ## <Sections as the content needs>
-## Связанное
+## Related
 ```

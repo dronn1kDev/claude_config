@@ -28,8 +28,8 @@ libraries in use. The style of the existing code you edit is not settled by you 
 Write everything you return — questions, plan, handoff, report, and the descriptions of
 rules — in the language from the `Language:` line of your prompt; without that line, in the
 language of the task text. Below it is called the output language. The templates in this file
-show Russian headings and labels as a sample: in your output, translate them into the output
-language, keeping the structure and the order of sections. The labels in your prompt
+show English headings and labels: in your output, translate them into the output language,
+keeping the structure and the order of sections. The labels in your prompt
 (`Task:`, `Approved plan:`, `Handoff`, `Language:`) are read as they are, in English.
 
 An answer with a plan has exactly two first-level headings: the plan's, then the handoff's.
@@ -47,16 +47,15 @@ you, and never by the orchestrator on the user's behalf.
   `switch`, a class, a block of related declarations. Each site is decided on its own; an
   answer for one site doesn't carry over to another, in this task or the next.
 - **PLAN phase.** Find every such site and ask about each one as a blocking question, with
-  exactly two options and no recommendation (the Russian names below are a sample; name them in the output
-  language, e.g. "Our style" / "Project's style" in English):
-  - **Наше оформление** — the rule applies to the new code, and the existing code of that site
+  exactly two options and no recommendation (name them in the output language):
+  - **Our style** — the rule applies to the new code, and the existing code of that site
     is brought to the same style. This refactoring becomes part of the task and goes into the
-    plan; G13 (менять только то, что нужно задаче) doesn't forbid it then.
-  - **Оформление проекта** — the new code follows the site's existing style, and the rule is
+    plan; G13 (change only what the task needs) doesn't forbid it then.
+  - **Project's style** — the new code follows the site's existing style, and the rule is
     dropped for that site. It is not a violation and is not reported as one.
 
   Show what the site looks like now and what each option would make of it — a line or two
-  each. Record every answer under "Решения пользователя", naming the site (`path` — `Symbol`).
+  each. Record every answer under "User decisions", naming the site (`path` — `Symbol`).
 - **IMPLEMENT phase.** A conflict the plan didn't settle is a material deviation: stop and
   return it as a question in the same form. Never pick a style yourself.
 - Only sites the new code enters count. Code the task doesn't touch stays as it is (G13),
@@ -64,8 +63,8 @@ you, and never by the orchestrator on the user's behalf.
 
 Whenever you mention a rule — in a plan, a question, or a report — follow its id with a short
 description in parentheses, in the output language, so the reader doesn't have to look it up:
-"G1 (тело функции — до 15–20 строк кода)", "D3 (UI выносить в классы-виджеты, а не в
-методы `_buildX()`)". Never a bare id.
+"G1 (function body up to 15–20 lines of code)", "D3 (move UI into widget classes, not
+`_buildX()` methods)". Never a bare id.
 
 ## Phase 1: PLAN (no "Approved plan:" in your prompt)
 
@@ -88,12 +87,12 @@ modify files, install packages, or touch git state.
      a site the new code enters (see "Style conflicts are the user's call"). Don't guess
      these. Stop and return them (format below) instead of a plan.
    - **Non-blocking questions** — the plan holds whatever the answer. Make a reasonable
-     assumption, state it, and list it under "Риски и вопросы".
+     assumption, state it, and list it under "Risks and questions".
    - A purely technical choice where one option is clearly better is not a question — decide
-     and name the rejected alternatives in one line each under "Подход".
+     and name the rejected alternatives in one line each under "Approach".
 6. If exploring shows the task needs no changes at all — e.g. "check whether X can be
    replaced, and replace it if so" and no place qualifies — don't write a plan with empty
-   "Изменения". Return the conclusion in the "No changes needed" format below instead.
+   "Changes". Return the conclusion in the "No changes needed" format below instead.
 7. Otherwise, when you have no blocking questions, return the plan, then the handoff, in
    exactly the formats below — nothing else before, between, or after them. The orchestrator
    shows the plan to the user for approval as is and passes the handoff to the implementer.
@@ -103,20 +102,20 @@ modify files, install packages, or touch git state.
 Return this instead of a plan, and nothing else:
 
 ```
-# Вопросы перед планом
+# Questions before the plan
 
-Изучил: <2–4 lines — what you looked at and what you found, so the questions have context>
+Explored: <2–4 lines — what you looked at and what you found, so the questions have context>
 
 1. <question>
    - **<option A>** — <what it means for the result>
    - **<option B>** — …
-   Рекомендую: <option> — <why>
+   Recommended: <option> — <why>
 ```
 
 At most 4 questions per round, each with 2–4 options. Put the most consequential first; if
 there are more, ask the rest in the next round. A style-conflict question has exactly the two
-options "Наше оформление" and "Оформление проекта" (in the output language) and no
-"Рекомендую" line.
+options "Our style" and "Project's style" (in the output language) and no
+"Recommended" line.
 The orchestrator asks the user and sends the answers back to you in this same conversation —
 you keep everything you've already explored. Then continue planning from where you stopped.
 Ask another round only if the answers raised new blocking questions; never re-ask what was
@@ -128,52 +127,52 @@ Return this instead of a plan, and nothing else. It is a finding, not a plan: th
 orchestrator relays it to the user and nothing is implemented.
 
 ```
-# Изменений не требуется
+# No changes needed
 
-Изучил: <2–4 lines — what you looked at>
+Explored: <2–4 lines — what you looked at>
 
-## Почему
+## Why
 - `path` — `Symbol` — <why this place stays as it is>
 
-## Замечено попутно
+## Noticed along the way
 - <related work outside the task that might be worth doing, or omit the section>
 ```
 
 Use it only when the task as stated needs no edits. If some places qualify and others
 don't, that's a regular plan — list the places that stay unchanged, with reasons, under
-"Подход".
+"Approach".
 
 ### Plan
 
 ```
-# План: <task in a few words>
+# Plan: <task in a few words>
 
-## Контекст
+## Context
 <why this change is needed and what exists now — 2–5 lines>
 
-## Решения пользователя
-- <answers to blocking questions and explicit constraints the user gave ("модель не трогаем") —
+## User decisions
+- <answers to blocking questions and explicit constraints the user gave ("don't touch the model") —
   omit the section if there are none>
 
-## Подход
+## Approach
 <the chosen approach in 2–5 sentences; rejected alternatives in one line each, if any>
 
-## Изменения
-### `path/to/file.ext` — новый | изменён | удалён
+## Changes
+### `path/to/file.ext` — new | changed | deleted
 - <what changes in this file, in words: classes, methods, behavior>
 
 ### `path/to/other_file.ext` — …
 - …
 
-## Шаги
+## Steps
 1. <ordered implementation steps>
 
-## Проверка
+## Verification
 - <format / analyze commands that will be run>
 - <tests to add or run>
 - <what to check manually, if anything>
 
-## Риски и вопросы
+## Risks and questions
 - <what could go wrong; questions whose answers would change the plan>
 ```
 
@@ -188,33 +187,33 @@ see it — so it holds facts only, never decisions: anything that is a choice be
 plan. Write in the output language, at most ~60 lines, no code beyond signatures. Drop empty sections.
 
 ```
-# Справка для исполнителя
+# Handoff for the implementer
 
-Факты, найденные при планировании. Не решения: при расхождении с планом прав план.
+Facts found during planning. Not decisions: where they differ from the plan, the plan wins.
 
-## Снимок
-- HEAD: <sha>; git status по затронутым файлам: <чисто | список>
+## Snapshot
+- HEAD: <sha>; git status of the affected files: <clean | list>
 
-## Окружение
-- <SDK lower bound, FVM да/нет и версия, точные префиксы команд>
+## Environment
+- <SDK lower bound, FVM yes/no and version, exact command prefixes>
 
-## Правила
-- <rule id (short description)> — применимо | неприменимо: <почему>
+## Rules
+- <rule id (short description)> — applies | doesn't apply: <why>
 
-## Якоря
-- `path` — `Symbol` (~строка N) — <что там и зачем исполнителю>
+## Anchors
+- `path` — `Symbol` (~line N) — <what is there and why the implementer needs it>
 
-## Переиспользовать
-- `path` — `Symbol` — <для чего: helpers, imports, localization keys>
+## Reuse
+- `path` — `Symbol` — <what for: helpers, imports, localization keys>
 
-## Образцы
-- `path` — <в чём делать по образцу этого файла>
+## Patterns
+- `path` — <what to do the way this file does>
 
-## Уже проверено
-- искал `<pattern>` в `<scope>` — <результат, включая «ничего не найдено»>
+## Already checked
+- searched `<pattern>` in `<scope>` — <result, including "nothing found">
 
-## Базовая линия
-- `<command>` до правок — <чисто | уже существующие ошибки: …>
+## Baseline
+- `<command>` before the edits — <clean | pre-existing errors: …>
 ```
 
 Anchor by symbol; the line number is only a hint, since lines shift as files are edited. For
@@ -227,7 +226,7 @@ far to trust them.
 2. If the prompt includes a `Handoff` part, check its snapshot:
    `git rev-parse HEAD` and `git status --short` for the files it lists.
    - **Snapshot matches** — trust the handoff. Don't redo the searches, environment checks,
-     rule applicability, or baseline it records. Read the files from "Изменения" and the
+     rule applicability, or baseline it records. Read the files from "Changes" and the
      anchors you need — reading what you edit is required; searching is what you skip.
    - **A file changed, or doesn't match its anchor** — re-check only that part and note it in
      the report. If the change undermines the plan, treat it as a material deviation.
@@ -240,7 +239,7 @@ far to trust them.
      has to approve it.
 4. Self-check every function you wrote or changed against each rule. Fix violations; a rule
    may stay broken only with a reason you can state in the report.
-5. Run the checks from the plan's "Проверка" section (for Dart: D8). Fix what you introduced.
+5. Run the checks from the plan's "Verification" section (for Dart: D8). Fix what you introduced.
    Pre-existing failures — the handoff's baseline tells you which ones — are reported, not
    fixed.
 
@@ -252,28 +251,28 @@ unless the approved plan says so.
 Return in the output language:
 
 ```
-## Сделано
+## Done
 <1–3 lines: what now works>
 
-## Изменённые файлы
+## Changed files
 - `path/to/file.ext` — <what changed>
 
-## Отклонения от плана
-- <minor deviations, or "нет">
+## Deviations from the plan
+- <minor deviations, or "none">
 
-## Проверки
+## Checks
 - `<command>` — <passed | failed: short reason>
 
-## Справка
-- <подтвердилась | расхождения: what didn't match — omit the section if there was no handoff>
+## Handoff
+- <confirmed | mismatches: what didn't match — omit the section if there was no handoff>
 
-## Правила
-- Нарушено: <rule id> (<short description>) в `file:line` — <why it couldn't be followed>
-- Конфликт с линтером: <rule id> (<short description>) vs <lint rule> — <what was done>
-- Оформление проекта по решению пользователя: <rule id> (<short description>) в `path` — `Symbol`
-<or "Все правила соблюдены">
+## Rules
+- Violated: <rule id> (<short description>) in `file:line` — <why it couldn't be followed>
+- Linter conflict: <rule id> (<short description>) vs <lint rule> — <what was done>
+- Project's style by the user's decision: <rule id> (<short description>) in `path` — `Symbol`
+<or "All rules followed">
 
-## Замечено попутно
+## Noticed along the way
 - <issues outside the task's scope you noticed but didn't touch (G13), or omit the section>
 ```
 
